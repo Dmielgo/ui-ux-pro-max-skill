@@ -17,6 +17,42 @@ Comprehensive skill for creating beautiful, accessible user interfaces combining
 - shadcn/ui: https://ui.shadcn.com/llms.txt
 - Tailwind CSS: https://tailwindcss.com/docs
 
+## CRITICAL RULE: Tailwind Utilities Over Custom CSS
+
+**NEVER generate custom CSS classes when a Tailwind utility exists.** If the design intelligence suggests a visual effect (glassmorphism, neumorphism, shadows, gradients, blur), implement it ALWAYS with Tailwind utility classes.
+
+```html
+<!-- CORRECT: Tailwind utilities -->
+<div class="bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl">
+
+<!-- WRONG: Custom CSS class -->
+<div class="glassmorphism-card">
+```
+
+### Style → Tailwind Utility Mapping
+
+| Style | Tailwind Classes |
+|-------|-----------------|
+| Glassmorphism | `bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl rounded-2xl` |
+| Neumorphism | `bg-gray-100 shadow-[8px_8px_16px_#d1d1d1,-8px_-8px_16px_#ffffff] rounded-2xl` |
+| Brutalism | `border-4 border-black shadow-[4px_4px_0px_0px_black] bg-yellow-300 font-black` |
+| Soft UI | `bg-white shadow-md rounded-xl hover:shadow-lg transition-shadow` |
+| Bento Grid | `grid grid-cols-2 md:grid-cols-4 gap-4 [&>*:nth-child(1)]:col-span-2 [&>*:nth-child(1)]:row-span-2` |
+| Gradient mesh | `bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400` |
+| Frosted glass | `bg-white/5 backdrop-blur-md border border-white/10` |
+| Dark elevated | `bg-gray-900 shadow-2xl shadow-black/50 border border-gray-800 rounded-xl` |
+
+## Tailwind Version Detection
+
+Before generating any Tailwind code, detect the version:
+
+1. **If `tailwind.config.js` or `tailwind.config.ts` exists** → Tailwind v3. Use `references/tailwind-v3/`
+2. **If CSS contains `@import "tailwindcss"` or `@theme`** → Tailwind v4. Use `references/tailwind-v4/`
+3. **If HTML contains `<script src="cdn.tailwindcss.com">`** → Tailwind v3 via CDN. Use `references/tailwind-v3/cdn.md`
+4. **If not detected** → Ask the user which version they use
+
+**Never mix v3 and v4 syntax.** They are incompatible.
+
 ## When to Use This Skill
 
 Use when:
@@ -180,18 +216,12 @@ Covers:
 
 ## Tailwind Customization
 
-**Config file structure, custom utilities, plugins, and theme extensions.**
+**Version-specific configuration guides:**
 
-See: `references/tailwind-customization.md`
-
-Covers:
-- @theme directive for custom tokens
-- Custom colors and fonts
-- Spacing and breakpoint extensions
-- Custom utility creation
-- Custom variants
-- Layer organization (@layer base, components, utilities)
-- Apply directive for component extraction
+- **Tailwind v3:** See `references/tailwind-v3/config.md` — tailwind.config.js, plugins via require(), @layer, @apply
+- **Tailwind v3 CDN:** See `references/tailwind-v3/cdn.md` — CDN setup for CMS/prototyping
+- **Tailwind v4:** See `references/tailwind-v4/config.md` — @import, @theme, @utility, @plugin, oklch()
+- **v3 → v4 Migration:** See `references/tailwind-v4/migration.md` — side-by-side comparison
 
 ## Visual Design System
 

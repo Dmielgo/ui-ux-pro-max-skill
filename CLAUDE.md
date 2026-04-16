@@ -25,7 +25,19 @@ python3 src/ui-ux-pro-max/scripts/search.py "<query>" --domain <domain> [-n <max
 ```bash
 python3 src/ui-ux-pro-max/scripts/search.py "<query>" --stack <stack>
 ```
-Available stacks: `html-tailwind` (default), `react`, `nextjs`, `astro`, `vue`, `nuxtjs`, `nuxt-ui`, `svelte`, `swiftui`, `react-native`, `flutter`, `shadcn`, `jetpack-compose`
+Available stacks: `html-tailwind-v3` (default), `html-tailwind-v4`, `react`, `nextjs`, `astro`, `vue`, `nuxtjs`, `nuxt-ui`, `svelte`, `swiftui`, `react-native`, `flutter`, `shadcn`, `jetpack-compose`
+
+## Tailwind Version Handling
+
+This fork separates Tailwind v3 and v4 references. They are incompatible — never mix them.
+
+**Auto-detection:**
+- `tailwind.config.js` / `tailwind.config.ts` → v3
+- `@import "tailwindcss"` / `@theme {}` in CSS → v4
+- `cdn.tailwindcss.com` in HTML → v3 CDN
+- If unclear → ask the user
+
+**Golden rule:** Always use Tailwind utility classes. Never generate custom CSS classes when a utility exists (e.g., use `bg-white/10 backdrop-blur-xl` not `.glassmorphism { ... }`).
 
 ## Architecture
 
